@@ -34,8 +34,8 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/js/**",
                         "/css/**",
                         "/img/**").permitAll()
-                .antMatchers("/").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/*").permitAll()
+
                 .and()
                 .formLogin()
                 .loginPage("/login")
