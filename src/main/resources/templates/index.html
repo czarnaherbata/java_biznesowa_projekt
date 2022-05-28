@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">>
+<head>
+    <meta charset="UTF-8">
+    <title>FORUM ROMANUM</title>
+</head>
+<body>
+<ul class="nav navbar-nav">
+    <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+</ul>
+</body>
+</html>
