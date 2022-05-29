@@ -58,12 +58,13 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register").permitAll()
                 .antMatchers("/register_success").permitAll()
                 .antMatchers("/user").hasAnyRole("USER")
-                .antMatchers("/admin").hasAnyRole("ADMIN")
+                .antMatchers("/admin/*").hasAnyRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()
                 .and()
                 .logout().permitAll()
+                .logoutSuccessUrl("/")
         ;
     }
 
