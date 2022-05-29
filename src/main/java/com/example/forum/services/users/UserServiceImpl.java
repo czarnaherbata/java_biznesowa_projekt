@@ -1,5 +1,6 @@
 package com.example.forum.services.users;
 
+import com.example.forum.MyUserDetails;
 import com.example.forum.models.Role;
 import com.example.forum.models.User;
 import com.example.forum.repositories.UserRepository;
@@ -9,18 +10,18 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service("userService")
 public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private RoleService roleService;
 
@@ -43,32 +44,14 @@ public class UserServiceImpl implements UserService{
     public void deleteUserById(Long id) {
         userRepository.deleteById(id);
     }
-@Override
+    @Override
     public User registerDefaultUser(User user) {
-        Role roleUser = roleService.findRoleByName("USER");
-        user.addRole(roleUser);
+        Role roleUser = roleService.findRoleByName("ROLE_USER");
+        Set<Role> roles = new HashSet<>();
+        roles.add(roleUser);
+        user.setRoles(roles);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userRepository.findByEmail(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("Invalid username or password.");
-        }
-        boolean enabled = true;
-        boolean accountNonExpired = true;
-        boolean credentialsNonExpired = true;
-        boolean accountNonLocked = true;
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), enabled, accountNonExpired,
-                credentialsNonExpired, accountNonLocked, getAuthorities(user.getRoles()));
-    }
-
-    private static List<GrantedAuthority> getAuthorities (Collection<Role> roles) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
-        }
-        return authorities;
-    }
 }

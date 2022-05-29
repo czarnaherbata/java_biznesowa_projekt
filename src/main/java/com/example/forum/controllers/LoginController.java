@@ -17,14 +17,14 @@ public class LoginController {
     private UserService userService;
     @Autowired private BCryptPasswordEncoder providedEncodere;
 
-    @GetMapping("/sign_up")
+    @GetMapping("/register")
     public String processRegister(Model model) {
         User user = new User();
         model.addAttribute("user", user);
         return "account/register";
     }
 
-    @PostMapping("/sign_up")
+    @PostMapping("/register")
     public String processRegister(@ModelAttribute("user") User user, BindingResult bindingResult, Model model) {
         if(bindingResult.hasErrors()){
             model.addAttribute("user", user);
