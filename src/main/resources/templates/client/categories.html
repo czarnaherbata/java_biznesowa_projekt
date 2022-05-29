@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="./index :: headerfiles">
+    <title>Kategorie</title>
+</head>
+<body>
+<nav th:replace="./index :: navigation"></nav>
+<div th:if="${categories.size() > 0 }" class="container p-2">
+    <h2> Poniżej znajdują się kategorie ogłoszeń, które możesz dodać.</h2>
+    <table class="table">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col">Nazwa kategorii</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="category : ${categories}">
+            <td th:text="${category.getName()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:unless="${categories.size() > 0 }" class="container p-2">
+    <h2> Na ten moment nie posiadamy kategorii w bazie, przepraszamy.</h2>
+</div>
+</body>
+</html>

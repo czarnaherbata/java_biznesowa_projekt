@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org">
+<head th:replace="admin/admin_panel :: headerfiles">
+    <title>Title</title>
+</head>
+<body>
+<nav th:replace="./index :: navigation"></nav>
+<div class="container p-2">
+    <a class="btn btn-primary" th:href="@{/admin/categories/new/}">Dodaj kategorie</a>
+    <table class="table">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nazwa</th>
+            <th scope="col">Aktywna</th>
+            <th scope="col">Akcje</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="category : ${categories}">
+            <th scope="row" th:text="${category.getId()}"></th>
+            <td th:text="${category.getName()}"></td>
+            <td th:if="${category.getActive() == true}"><i class="bi bi-check w-100 h-100"></i></td>
+            <td th:unless="${category.getActive() == true}"><i class="bi bi-x w-100 h-100"></i></td>
+            <td>
+                <a th:href="@{/admin/categories/edit/{id}(id=${category.getId()})}" class="btn btn-primary"> Update</a>
+                <a th:href="@{/admin/categories/delete/{id}(id=${category.getId()})}" class="btn btn-danger"> Destroy </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
